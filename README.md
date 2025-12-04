@@ -93,8 +93,14 @@ The following path aliases are configured:
 
 ### Prerequisites
 
-- Node.js (v23 or higher)
-- PostgreSQL database
+- Operating System (MacOS X, Linux, Windows)
+- [Nodejs (Version 23 or higher)](https://nodejs.org/en/docs/) to run npm commands
+- [NVM](https://nodejs.org/en/docs/) to manage multiplenode versions
+- PNPM — Fast and efficient package manager for installing dependencies  
+- [Visual Studio](https://code.visualstudio.com/Download) Code as text editor
+- [Postman](https://www.postman.com/downloads/) for building and using APIs
+- [Postgresql](https://www.postgresql.org/) for database program. Note: make sure to remember the crendentials (username & password) upon installation
+- [PgAdmin](https://www.pgadmin.org/) for database gui
 
 ### Clone the repository
 ```bash
