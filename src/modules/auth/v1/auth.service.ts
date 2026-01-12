@@ -5,6 +5,7 @@ import config from "@config";
 import { UserRepository } from "../../users/user.repository"
 import { LoginDto, RegisterDto } from "../auth.dto";
 import { HttpException } from '@core/exceptions/http.exception';
+import { generateAccessToken } from "@core/utils/jwt";
 
 export class AuthService {
     constructor(private repo = new UserRepository()) { }
@@ -21,11 +22,7 @@ export class AuthService {
             throw new HttpException(401, "Invalid credentials");
         }
 
-        const token = jwt.sign(
-            { id: user.id, email: user.email },
-            config.jwt.accessSecret,
-            { expiresIn: config.jwt.accessExpiresIn as any || "1d" }
-        );
+        const token = generateAccessToken({ userData:{ id: user.id, email: user.email } });
 
         return {
             token,

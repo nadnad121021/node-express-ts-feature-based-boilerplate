@@ -1,12 +1,23 @@
 import type { NextFunction, Request, Response } from 'express';
 import { UserService } from './user.service';
-import { RequestWithPerson } from '@core/interfaces/auth.interface';
+import { RequestWithUser } from '@core/interfaces/auth.interface';
+import { IGetUsersFilterQuery } from '@core/interfaces/user.interface';
+import { TSortOrder } from '@core/enums/common.enum';
 
 export class UserController {
-  constructor(private service = new UserService()) {}
+  constructor(private service = new UserService()) { }
 
-  getUsers = async (req: RequestWithPerson, res: Response) => {
-    const users = await this.service.getUsers();
+  getUsers = async (req: RequestWithUser, res: Response) => {
+    const { skip, limit, sortBy, sortOrder, searchKey } = req.query;
+    const queryParams: IGetUsersFilterQuery = {
+      skip: skip ? parseInt(skip as string, 10) : 0,
+      limit: limit ? parseInt(limit as string, 10) : 0,
+      sortBy: sortBy as string,
+      sortOrder: sortOrder as TSortOrder,
+      searchKey: searchKey as string
+    };
+
+    const users = await this.service.getUsersByFilter(queryParams);
     res.json(users);
   };
 
@@ -25,8 +36,8 @@ export class UserController {
     res.json(user);
   };
 
-  deleteUser = async (req: Request, res: Response) => {
-    await this.service.deleteUser(req.params.id);
-    res.status(204).send();
+  deleteUser = async (req: RequestWithUser, res: Response) => {
+    const result = await this.service.softDeleteUser(req.params.id, req.user?.id || 'system');
+    res.json(result);
   };
 }

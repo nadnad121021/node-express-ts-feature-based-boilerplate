@@ -1,3 +1,5 @@
+import { IQuery } from "./common.interface";
+
 export interface IUser {
     id: string;
     name: string;
@@ -6,4 +8,8 @@ export interface IUser {
     isActive: boolean;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface IGetUsersFilterQuery extends IQuery {
+    searchKey?: string;
 }

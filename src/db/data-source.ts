@@ -1,18 +1,37 @@
-import 'reflect-metadata';
-import { DataSource } from 'typeorm';
-import config from '@config';
-import { User } from '@modules/users/user.entity';
 
-export const AppDataSource = new DataSource({
-  type: 'postgres',
-  host: config.db.host,
-  port: config.db.port,
-  username: config.db.username,
-  password: config.db.password,
-  database: config.db.database,
-  synchronize: config.nodeEnv !== 'production', // ⚠️ Set false in production and use migrations
-  logging: false,
+import { getDatabaseConfig } from '../config/index';
+import { User } from '@modules/users/user.entity';
+import { DataSource } from 'typeorm';
+
+const dbConfig = getDatabaseConfig();
+
+const baseOptions = {
+  synchronize: dbConfig.synchronize,
+  logging: dbConfig.logging,
   entities: [User],
-  migrations: [],
-  subscribers: []
-});
+  migrations: ['src/migrations/**/*.ts'],
+  subscribers: ['src/subscribers/**/*.ts'],
+};
+
+let dataSourceOptions: any = {};
+if (dbConfig.type === 'mongodb') {
+  dataSourceOptions = {
+    ...baseOptions,
+    type: 'mongodb',
+    url: dbConfig.url || `mongodb://${dbConfig.username}:${dbConfig.password}@${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`,
+    useUnifiedTopology: true,
+  };
+} else {
+  dataSourceOptions = {
+    ...baseOptions,
+    type: dbConfig.type,
+    host: dbConfig.host,
+    port: dbConfig.port,
+    username: dbConfig.username,
+    password: dbConfig.password,
+    database: dbConfig.database,
+    url: dbConfig.url,
+  };
+}
+
+export const AppDataSource = new DataSource(dataSourceOptions);

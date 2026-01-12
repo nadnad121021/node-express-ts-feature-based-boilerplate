@@ -3,10 +3,11 @@ import jwt from 'jsonwebtoken';
 import { UnauthorizedException } from '@core/exceptions/http.exception';
 import config  from '@config';
 import { UserRepository } from "@modules/users/user.repository"
-import { RequestWithPerson } from '@core/interfaces/auth.interface';
+import { RequestWithUser } from '@core/interfaces/auth.interface';
+import { verifyAccessToken } from '@core/utils/jwt';
 
 export const authMiddleware = (required = true) => {
-  return async (req: RequestWithPerson, res: Response, next: NextFunction) => {
+  return async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.headers.authorization;
 
@@ -15,12 +16,15 @@ export const authMiddleware = (required = true) => {
         throw new UnauthorizedException('Missing authorization header');
       }
 
-      const decoded = jwt.verify(authHeader, config.jwt.accessSecret);
+      const decoded = verifyAccessToken(authHeader);
       if (!decoded) {
         throw new UnauthorizedException('Invalid token');
       }
+      if(!decoded.userData || !decoded.userData.id){
+        throw new UnauthorizedException('Invalid token data');
+      }
       const userRepo = new UserRepository();
-      const user = await userRepo.findById((decoded as any).id);
+      const user = await userRepo.findById(decoded.userData.id);
       req.user = user;
       req.token = authHeader;
 

@@ -8,7 +8,9 @@
     "start": "node dist/server.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "pnpm install"
+    "prepare": "pnpm run install-core-dependencies && pnpm run install-dev-dependencies",
+    "install-core-dependencies": "pnpm add express cors helmet morgan dotenv typeorm reflect-metadata pg class-validator class-transformer bcrypt jsonwebtoken cli-table3 chalk winston ioredis mysql2",
+    "install-dev-dependencies": "pnpm add -D typescript ts-node ts-node-dev @types/node @types/express @types/cors @types/morgan @types/bcrypt @types/jsonwebtoken tsc-alias tsconfig-paths nodemon"
   },
   "keywords": [
     "node",

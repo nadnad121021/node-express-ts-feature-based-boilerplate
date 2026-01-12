@@ -1,13 +1,18 @@
 import { IUser } from '@core/interfaces/user.interface';
 import { 
-    Entity, 
-    PrimaryGeneratedColumn, 
-    Column, 
-    CreateDateColumn, 
-    UpdateDateColumn 
+  Entity, 
+  PrimaryGeneratedColumn, 
+  Column, 
+  CreateDateColumn, 
+  UpdateDateColumn, 
+  Index
 } from 'typeorm';
 
 @Entity('users')
+@Index('idx_user_email', ['email'], { unique: true })
+@Index('idx_user_active_not_deleted', ['isActive'], {
+  where: `"isDeleted" = false`,
+})
 export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -29,4 +34,13 @@ export class User implements IUser {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @Column({ default: false })
+  isDeleted!: boolean;
+
+  @Column({ type: 'timestamp', nullable: true })
+  deletedAt?: Date;
+
+  @Column({ nullable: true })
+  deletedBy?: string;
 }

@@ -20,20 +20,26 @@ project-root/
 ├─ src/
 │  ├─ config/
 │  │   └─ index.ts
-│  ├─ db/
-│  │   └─ data-source.ts
 │  ├─ core/
+│  │   ├─ enums/
+│  │   │   └─ common.enum.ts
 │  │   ├─ middlewares/
 │  │   │   ├─ error.middleware.ts
 │  │   │   ├─ auth.middleware.ts
 │  │   │   └─ validate.dto.ts
 │  │   ├─ utils/
-│  │   │   └─ logger.ts
+│  │   │   ├─ cache.ts
+│  │   │   ├─ jwt.ts
+│  │   │   ├─ logger.ts
+│  │   │   ├─ redisClient.ts
+│  │   │   └─ versionedRouter.ts
 │  │   └─ exceptions/
 │  │       └─ http.exception.ts
 │  │   ├─ interfaces/
 │  │   │   ├─ user.interface.ts
 │  │   │   └─ auth.interface.ts
+│  ├─ db/
+│  │   └─ data-source.ts
 │  ├─ modules/
 │  │   ├─ users/
 │  │   │   ├─ user.entity.ts
@@ -94,13 +100,14 @@ The following path aliases are configured:
 ### Prerequisites
 
 - Operating System (MacOS X, Linux, Windows)
-- [Nodejs (Version 23 or higher)](https://nodejs.org/en/docs/) to run npm commands
+- [Nodejs (Version 23 or higher)](https://nodejs.org/en/docs/) to run npm commands (recommended version 23.11.0)
 - [NVM](https://nodejs.org/en/docs/) to manage multiplenode versions
 - PNPM — Fast and efficient package manager for installing dependencies  
 - [Visual Studio](https://code.visualstudio.com/Download) Code as text editor
 - [Postman](https://www.postman.com/downloads/) for building and using APIs
 - [Postgresql](https://www.postgresql.org/) for database program. Note: make sure to remember the crendentials (username & password) upon installation
 - [PgAdmin](https://www.pgadmin.org/) for database gui
+- [Redis] for caching
 
 ### Clone the repository
 ```bash
@@ -111,11 +118,16 @@ cd project-root
 ## 📦 Installation
 
 1. Install dependencies:
+#### option 1 (recommended):
+```bash
+pnpm run prepare
+```
+#### option 2 (manual):
 ```bash
 pnpm install
 ```
 ```bash
-pnpm add express cors helmet morgan dotenv typeorm reflect-metadata pg class-validator class-transformer bcrypt jsonwebtoken cli-table3 chalk winston
+pnpm add express cors helmet morgan dotenv typeorm reflect-metadata pg class-validator class-transformer bcrypt jsonwebtoken cli-table3 chalk winston ioredis mysql2
 ```
 ```bash
 pnpm add -D typescript ts-node ts-node-dev @types/node @types/express @types/cors @types/morgan @types/bcrypt @types/jsonwebtoken tsc-alias tsconfig-paths nodemon
@@ -123,17 +135,50 @@ pnpm add -D typescript ts-node ts-node-dev @types/node @types/express @types/cor
 
 2. Configure environment variables in `.env`:
 ```env
-DB_PORT=5432
-DATABASE_HOST=localhost
-DATABASE_USER=postgres
-DATABASE_PASSWORD=password123
-DATABASE_NAME=boilerplate_db
+# App
 PORT=4000
 NODE_ENV=development
+
+# Enable or disable caching (redis)
+ENABLE_CACHE=true
+
+# Database (choose one: postgres, mysql, mongodb)
+DB_TYPE=mysql
+DB_SYNC=true # Set to true to auto-sync models with DB (development only)
+DB_LOGGING=false
+
+# For Postgres/MySQL
+# DB_HOST=localhost
+# DB_PORT=5432
+# DB_USER=postgres
+# DB_PASSWORD=password123
+# DB_NAME=boilerplate_db
+
+# For MySQL
+DB_HOST=127.0.0.1
+DB_PORT=3307
+DB_USER=root
+DB_PASSWORD=password123
+DB_NAME=boilerplate_db
+
+# For MongoDB
+#DB_PORT=27017
+#DB_USER=mongouser
+#DB_PASSWORD=mongopass
+#DB_NAME=mongodb_db
+#DATABASE_URL= # Optional: full connection string, takes precedence
+
+# JWT
 JWT_ACCESS_SECRET=testaccesssecret
-JWT_ACCESS_EXPIRES_IN=15m
+JWT_ACCESS_EXPIRES_IN=1d
 JWT_REFRESH_SECRET=testrefreshsecret
 JWT_REFRESH_EXPIRES_IN=7d
+
+# Redis (optional, for caching)
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+#REDIS_PASSWORD=
+
 ```
 
 ### Development
@@ -177,11 +222,12 @@ pnpm start
 | Node.js    | Runtime         |
 | Express.js | Web Framework   |
 | TypeScript | Typesafety      |
-| PostgreSQL | Database        |
+| PostgreSQL / MySQL / MongoDB | Database        |
 | TypeORM    | ORM             |
 | pnpm       | Package Manager |
 | JWT        | Authentication  |
 | Winston    | Logging         |
+| Redis      | Caching         |
 
 
 ### 👤 Author

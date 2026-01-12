@@ -4,12 +4,16 @@ import { User } from '@modules/users/user.entity';
 export class UserRepository {
   private repo = AppDataSource.getRepository(User);
 
-  findAll() {
-    return this.repo.find();
+  findAllIncludingDeleted() {
+    return this.repo.find({ });
+  }
+
+  findActiveUsers() {
+    return this.repo.find({ where: { isActive: true, isDeleted: false } });
   }
 
   findById(id: string) {
-    return this.repo.findOne({ where: { id } });
+    return this.repo.findOne({ where: { id, isActive: true, isDeleted: false } });
   }
 
   findByEmail(email: string) {
@@ -27,5 +31,13 @@ export class UserRepository {
 
   delete(id: string) {
     return this.repo.delete({ id });
+  }
+
+  findAll(filter: Partial<User>) {
+    return this.repo.find({ where: filter });
+  }
+
+  createQueryBuilder(alias: string) {
+    return this.repo.createQueryBuilder(alias);
   }
 }

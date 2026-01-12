@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "./auth.service";
-import { RequestWithPerson } from "@core/interfaces/auth.interface";
+import { RequestWithUser } from "@core/interfaces/auth.interface";
 
 export class AuthController {
   constructor(private authService = new AuthService()) {}
@@ -15,7 +15,7 @@ export class AuthController {
     }
   };
 
-  me = async (req: RequestWithPerson, res: Response) => {
+  me = async (req: RequestWithUser, res: Response) => {
     res.json({ success: true, user: req.user });
   };
 }
