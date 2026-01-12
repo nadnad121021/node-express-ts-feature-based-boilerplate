@@ -197,6 +197,7 @@ Open PowerShell (Run as Administrator):
 wsl --install
 ```
 🔁 Restart your PC when prompted.
+
 2️⃣ Install Ubuntu
  - Open Microsoft Store
  - Install Ubuntu 22.04 LTS
