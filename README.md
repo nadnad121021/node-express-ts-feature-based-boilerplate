@@ -1,16 +1,16 @@
-# 🚀 Node.js + Express + PostgreSQL + TypeScript Boilerplate
+# 🚀 Node.js + Express + TypeScript Boilerplate with Dynamic PostgreSQL / MySQL / MongoDB Support
 
 A scalable backend boilerplate built with:
 
 - **Node.js (ESM)**
 - **Express.js**
-- **PostgreSQL (TypeORM)**
+- **PostgreSQL / MySQL / MongoDB (TypeORM)**
 - **TypeScript**
 - **pnpm**
 - **JWT Authentication**
 - **API Versioning (v1, v2, …)**
 
-This template helps you build production-grade server applications with clean architecture and maintainability in mind.
+This template helps you build production-grade server applications with clean architecture and maintainability in mind, supporting PostgreSQL, MySQL, or MongoDB.
 
 ---
 
@@ -105,9 +105,13 @@ The following path aliases are configured:
 - PNPM — Fast and efficient package manager for installing dependencies  
 - [Visual Studio](https://code.visualstudio.com/Download) Code as text editor
 - [Postman](https://www.postman.com/downloads/) for building and using APIs
-- [Postgresql](https://www.postgresql.org/) for database program. Note: make sure to remember the crendentials (username & password) upon installation
-- [PgAdmin](https://www.pgadmin.org/) for database gui
-- [Redis] for caching
+- Database (choose one based on your setup):
+  Note: make sure to remember the crendentials (username & password) upon installation
+   - [Postgresql](https://www.postgresql.org/) 
+   - [MySQL](https://www.mysql.com/) 
+   - [MongoDB](https://www.mongodb.com/)
+- [PgAdmin](https://www.pgadmin.org/) / [MySQL Workbench](https://www.mysql.com/products/workbench/) /  [MongoDB Compass](https://www.mongodb.com/products/tools/compass) -  for database gui
+- [Redis](https://redis.io/downloads/) for caching
 
 ### Clone the repository
 ```bash
@@ -179,6 +183,49 @@ REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 #REDIS_PASSWORD=
 
+```
+
+## If Caching Enabled (Set Up Redis local)
+✅ OPTION 1 (RECOMMENDED): Redis via WSL (Best & Stable) ⭐
+
+This is the officially recommended way by Redis.
+
+1️⃣ Install WSL
+Open PowerShell (Run as Administrator):
+
+```bash
+wsl --install
+```
+🔁 Restart your PC when prompted.
+2️⃣ Install Ubuntu
+ - Open Microsoft Store
+ - Install Ubuntu 22.04 LTS
+ - Launch it
+ - Create a Linux username/password
+
+3️⃣ Install Redis inside Ubuntu
+In the Ubuntu terminal:
+```bash
+sudo apt update
+sudo apt install redis-server -y
+```
+
+4️⃣ Start Redis
+```bash
+sudo service redis-server start
+```
+
+5️⃣ Verify Redis
+```bash
+redis-cli ping
+```
+✅ Output:
+```
+PONG
+```
+Redis is now running on:
+```
+localhost:6379
 ```
 
 ### Development
