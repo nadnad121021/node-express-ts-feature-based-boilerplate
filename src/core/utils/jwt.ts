@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from '@config';
-import { AuthTokenPayload, JWTDecoded } from '@core/interfaces/auth.interface';
+import { AuthTokenPayload, JWTDecoded } from '@modules/auth/auth.interface';
 
 export function generateAccessToken(payload: { userData: AuthTokenPayload }) {
   //@ts-ignore

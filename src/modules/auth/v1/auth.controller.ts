@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthService } from "./auth.service";
-import { RequestWithUser } from "@core/interfaces/auth.interface";
+import { RequestWithUser } from "@modules/auth/auth.interface";
 
 export class AuthController {
   constructor(private authService = new AuthService()) {}

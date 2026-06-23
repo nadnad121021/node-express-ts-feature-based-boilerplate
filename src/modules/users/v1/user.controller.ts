@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
 import { UserService } from './user.service';
-import { RequestWithUser } from '@core/interfaces/auth.interface';
-import { IGetUsersFilterQuery } from '@core/interfaces/user.interface';
+import { RequestWithUser } from '@modules/auth/auth.interface';
+import { IGetUsersFilterQuery } from '@modules/users/user.interface';
 import { TSortOrder } from '@core/enums/common.enum';
 
 export class UserController {
@@ -22,7 +22,7 @@ export class UserController {
   };
 
   getUser = async (req: Request, res: Response) => {
-    const user = await this.service.getUser(req.params.id);
+    const user = await this.service.getUser((req as any).params.id);
     res.json(user);
   };
 
@@ -32,12 +32,12 @@ export class UserController {
   };
 
   updateUser = async (req: Request, res: Response) => {
-    const user = await this.service.updateUser(req.params.id, req.body);
+    const user = await this.service.updateUser((req as any).params.id, req.body);
     res.json(user);
   };
 
   deleteUser = async (req: RequestWithUser, res: Response) => {
-    const result = await this.service.softDeleteUser(req.params.id, req.user?.id || 'system');
+    const result = await this.service.softDeleteUser((req as any).params.id, req.user?.id || 'system');
     res.json(result);
   };
 }

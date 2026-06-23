@@ -16,54 +16,78 @@ This template helps you build production-grade server applications with clean ar
 
 ## 📁 Folder Structure
 ```
-project-root/
-├─ src/
-│  ├─ config/
-│  │   └─ index.ts
-│  ├─ core/
-│  │   ├─ enums/
-│  │   │   └─ common.enum.ts
-│  │   ├─ middlewares/
-│  │   │   ├─ error.middleware.ts
-│  │   │   ├─ auth.middleware.ts
-│  │   │   └─ validate.dto.ts
-│  │   ├─ utils/
-│  │   │   ├─ cache.ts
-│  │   │   ├─ jwt.ts
-│  │   │   ├─ logger.ts
-│  │   │   ├─ redisClient.ts
-│  │   │   └─ versionedRouter.ts
-│  │   └─ exceptions/
-│  │       └─ http.exception.ts
-│  │   ├─ interfaces/
-│  │   │   ├─ user.interface.ts
-│  │   │   └─ auth.interface.ts
-│  ├─ db/
-│  │   └─ data-source.ts
-│  ├─ modules/
-│  │   ├─ users/
-│  │   │   ├─ user.entity.ts
-│  │   │   ├─ user.dto.ts
-│  │   │   ├─ user.repository.ts
-│  │   │   ├─ v1/
-│  │   │   │   ├─ user.service.ts
-│  │   │   │   ├─ user.controller.ts
-│  │   │   │   └─ user.routes.ts
-│  │   ├─ auth/
-│  │   │   ├─ auth.dto.ts
-│  │   │   ├─ v1/
-│  │   │   │   ├─ auth.service.ts
-│  │   │   │   ├─ auth.controller.ts
-│  │   │   │   └─ auth.routes.ts
-│  │   │   └─ v2/(for adding versions)
-│  ├─ app.ts
-│  └─ server.ts
-│
-├─ .env.example
-├─ package.json
-├─ pnpm-lock.yaml
-├─ tsconfig.json
-└─ README.md
+📦project-root/
+ ┣ 📂src
+ ┃ ┣ 📂config
+ ┃ ┃ ┗ 📜index.ts
+ ┃ ┣ 📂core
+ ┃ ┃ ┣ 📂enums
+ ┃ ┃ ┃ ┗ 📜common.enum.ts
+ ┃ ┃ ┣ 📂exceptions
+ ┃ ┃ ┃ ┗ 📜http.exception.ts
+ ┃ ┃ ┣ 📂interfaces
+ ┃ ┃ ┃ ┗ 📜common.interface.ts
+ ┃ ┃ ┣ 📂logger
+ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┣ 📂middlewares
+ ┃ ┃ ┃ ┣ 📜auth.middleware.ts
+ ┃ ┃ ┃ ┣ 📜error.middleware.ts
+ ┃ ┃ ┃ ┗ 📜validate.dto.ts
+ ┃ ┃ ┗ 📂utils
+ ┃ ┃ ┃ ┣ 📜jwt.ts
+ ┃ ┃ ┃ ┗ 📜versioned.router.ts
+ ┃ ┣ 📂db
+ ┃ ┃ ┣ 📂migrations
+ ┃ ┃ ┣ 📂seeds
+ ┃ ┃ ┣ 📂subscribers
+ ┃ ┃ ┗ 📜data-source.ts
+ ┃ ┣ 📂events
+ ┃ ┃ ┣ 📂handlers
+ ┃ ┃ ┣ 📜event-bus.ts
+ ┃ ┃ ┗ 📜topics.ts
+ ┃ ┣ 📂infrastructure
+ ┃ ┃ ┣ 📂cache
+ ┃ ┃ ┃ ┣ 📜index.ts
+ ┃ ┃ ┃ ┗ 📜redis.client.ts
+ ┃ ┃ ┣ 📂messaging
+ ┃ ┃ ┃ ┣ 📜kafka.consumer.ts
+ ┃ ┃ ┃ ┗ 📜kafka.producer.ts
+ ┃ ┃ ┣ 📂queue
+ ┃ ┃ ┃ ┗ 📜bullmq.ts
+ ┃ ┃ ┗ 📂storage
+ ┃ ┃ ┃ ┗ 📜s3.client.ts
+ ┃ ┣ 📂jobs
+ ┃ ┃ ┗ 📜common.job.ts
+ ┃ ┣ 📂modules
+ ┃ ┃ ┣ 📂auth
+ ┃ ┃ ┃ ┣ 📂v1
+ ┃ ┃ ┃ ┃ ┣ 📜auth.controller.ts
+ ┃ ┃ ┃ ┃ ┣ 📜auth.routes.ts
+ ┃ ┃ ┃ ┃ ┗ 📜auth.service.ts
+ ┃ ┃ ┃ ┣ 📜auth.dto.ts
+ ┃ ┃ ┃ ┣ 📜auth.interface.ts
+ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┗ 📂users
+ ┃ ┃ ┃ ┣ 📂v1
+ ┃ ┃ ┃ ┃ ┣ 📜user.controller.ts
+ ┃ ┃ ┃ ┃ ┣ 📜user.routes.ts
+ ┃ ┃ ┃ ┃ ┗ 📜user.service.ts
+ ┃ ┃ ┃ ┣ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜user.dto.ts
+ ┃ ┃ ┃ ┣ 📜user.entity.ts
+ ┃ ┃ ┃ ┣ 📜user.interface.ts
+ ┃ ┃ ┃ ┗ 📜user.repository.ts
+ ┃ ┣ 📂scripts
+ ┃ ┃ ┗ 📜generate-module.ts
+ ┃ ┣ 📜app.ts
+ ┃ ┗ 📜server.ts
+ ┣ 📜.env
+ ┣ 📜.env.example
+ ┣ 📜.gitignore
+ ┣ 📜package.json
+ ┣ 📜pnpm-lock.yaml
+ ┣ 📜README.md
+ ┗ 📜tsconfig.json
 ```
 
 ---
@@ -131,10 +155,10 @@ pnpm run prepare
 pnpm install
 ```
 ```bash
-pnpm add express cors helmet morgan dotenv typeorm reflect-metadata pg class-validator class-transformer bcrypt jsonwebtoken cli-table3 chalk winston ioredis mysql2
+pnpm add express cors helmet morgan dotenv typeorm reflect-metadata pg class-validator class-transformer bcrypt jsonwebtoken cli-table3 chalk winston ioredis mysql2 pluralize
 ```
 ```bash
-pnpm add -D typescript ts-node ts-node-dev @types/node @types/express @types/cors @types/morgan @types/bcrypt @types/jsonwebtoken tsc-alias tsconfig-paths nodemon
+pnpm add -D typescript ts-node ts-node-dev @types/node @types/express @types/cors @types/morgan @types/bcrypt @types/jsonwebtoken @types/pg @types/pluralize tsx tsc-alias tsconfig-paths nodemon
 ```
 
 2. Configure environment variables in `.env`:
@@ -183,6 +207,12 @@ REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 #REDIS_PASSWORD=
 
+```
+
+## Generating new Module
+```bash
+pnpm generate:module <module name>
+ex: pnpm generate:module bookings
 ```
 
 ## If Caching Enabled (Set Up Redis local)

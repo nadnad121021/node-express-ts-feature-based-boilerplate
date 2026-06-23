@@ -1,4 +1,4 @@
-import { IQuery } from "./common.interface";
+import { IQuery } from "../../core/interfaces/common.interface";
 
 export interface IUser {
     id: string;

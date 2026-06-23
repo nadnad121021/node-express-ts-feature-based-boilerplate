@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { errorMiddleware } from './core/middlewares/error.middleware';
-import { loadVersionedRoutes } from './core/utils/versionedRouter';
+import { loadVersionedRoutes } from './core/utils/versioned.router';
 
 const app = express();
 

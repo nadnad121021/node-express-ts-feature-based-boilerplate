@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { UnauthorizedException } from '@core/exceptions/http.exception';
 import config  from '@config';
 import { UserRepository } from "@modules/users/user.repository"
-import { RequestWithUser } from '@core/interfaces/auth.interface';
+import { RequestWithUser } from '@modules/auth/auth.interface';
 import { verifyAccessToken } from '@core/utils/jwt';
 
 export const authMiddleware = (required = true) => {

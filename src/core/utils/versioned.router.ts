@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Router } from 'express';
 import config from '@config';
-import logger from './logger';
+import logger from '../logger';
 
 export const loadVersionedRoutes = (moduleName: string): Router => {
   const router = Router();

@@ -1,4 +1,4 @@
-import { IUser } from '@core/interfaces/user.interface';
+import { IUser } from '@modules/users/user.interface';
 import { 
   Entity, 
   PrimaryGeneratedColumn, 

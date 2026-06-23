@@ -4,9 +4,9 @@ import { AppDataSource } from '../../../db/data-source';
 import { CreateUserDto, UpdateUserDto } from '../user.dto';
 import { HttpException } from '@core/exceptions/http.exception';
 import { User } from '../user.entity';
-import { cacheDel, cacheGet, cacheSet } from '@core/utils/cache';
+import { cacheDel, cacheGet, cacheSet } from 'infrastructure/cache';
 import config from '@config';
-import { IGetUsersFilterQuery } from '@core/interfaces/user.interface';
+import { IGetUsersFilterQuery } from '@modules/users/user.interface';
 
 export class UserService {
   constructor(private repo = new UserRepository()) { }
