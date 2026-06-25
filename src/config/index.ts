@@ -6,6 +6,7 @@ dotenv.config();
 export type DatabaseType = 'postgres' | 'mysql' | 'mongodb';
 
 export interface DatabaseConfig {
+  nodeEnv: string;
   type: DatabaseType;
   host?: string;
   port?: number;
@@ -24,7 +25,8 @@ export const getDatabaseConfig = (): DatabaseConfig => {
   const dbLogging = process.env.DB_LOGGING === 'true';
 
   const baseConfig = {
-    synchronize: dbSync,
+    nodeEnv,
+    synchronize: false, // Always set to false for production safety; use migrations instead
     logging: dbLogging,
   };
 
@@ -119,10 +121,11 @@ const envVariables = [
   { name: 'DATABASE_URL', value: dbConfig.url || 'N/A' },
   { name: 'DB_PORT', value: dbConfig.port || 'N/A' },
   { name: 'DB_USER', value: dbConfig.username || 'N/A' },
-  { name: 'DB_NAME', value: dbConfig.database || 'N/A' },
+  { name: 'DB_PASSWORD', value: dbConfig.password || 'N/A' },
   { name: 'JWT_ACCESS_SECRET', value: config.jwt.accessSecret },
   { name: 'JWT_REFRESH_SECRET', value: config.jwt.refreshSecret },
-  { name: 'JWT_ACCESS_EXPIRES_IN', value: config.jwt.accessExpiresIn }
+  { name: 'JWT_ACCESS_EXPIRES_IN', value: config.jwt.accessExpiresIn },
+  { name: 'JWT_REFRESH_EXPIRES_IN', value: config.jwt.refreshExpiresIn }
 ]
 if(config.enableCache){
   envVariables.push({ name: 'REDIS_HOST', value: config.redis?.host || 'N/A' });
