@@ -11,7 +11,10 @@
     "prepare": "pnpm run install-core-dependencies && pnpm run install-dev-dependencies",
     "install-core-dependencies": "pnpm add express cors helmet morgan dotenv typeorm reflect-metadata pg class-validator class-transformer bcrypt jsonwebtoken cli-table3 chalk winston ioredis mysql2 pluralize",
     "install-dev-dependencies": "pnpm add -D typescript ts-node ts-node-dev @types/node @types/express @types/cors @types/morgan @types/bcrypt @types/jsonwebtoken @types/pg @types/pluralize tsx tsc-alias tsconfig-paths nodemon",
-    "generate:module": "tsx src/scripts/generate-module.ts"
+    "generate:module": "tsx src/scripts/generate-module.ts",
+    "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate src/db/migrations/InitSchema -d src/db/data-source.ts",
+    "migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run -d src/db/data-source.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:revert -d src/db/data-source.ts"
   },
   "keywords": [
     "node",
